@@ -1,0 +1,25 @@
+body {
+    padding-top: 90px;}
+
+.navbar {
+    height: 75px;
+    background-color: #006AB8;
+}
+
+.navbar-nav > li > a {
+    padding-top:25px;
+    padding-bottom:25px;
+}
+
+.logo {
+    height: 70px;
+}
+
+.navbar-brand {
+    padding-top: 0px;
+}
+
+h1 {
+    font-weight: bold;
+    color: white;
+}
