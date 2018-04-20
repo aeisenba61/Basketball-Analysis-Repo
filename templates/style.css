@@ -9,7 +9,12 @@ body {
 .navbar-nav > li > a {
     padding-top:25px;
     padding-bottom:25px;
+    text-shadow: .75px .75px gray;
 }
+
+nav .navbar-nav li .nav-link{
+  color: white !important;
+  }
 
 .logo {
     height: 70px;
@@ -21,5 +26,11 @@ body {
 
 h1 {
     font-weight: bold;
-    color: white;
+    color: #CA102E;
+    text-shadow: 1px 1px gray;
+}
+
+.nav-link {
+    font-weight: bold;
+    font-size: 18px;
 }
