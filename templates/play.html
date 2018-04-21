@@ -47,7 +47,7 @@
             <ol>
                 <li><a href = "#feat-sel">Feature Selection</a></li>
                 <li><a href = "#cv">Cross-Validation</a></li>
-                <li>Testing the Classifier</li>
+                <li><a href = "#test-new">Testing the Classifier</a></li>
             </ol>
         </div>
       </div>
@@ -399,14 +399,14 @@
 
 
 
-<!-- Cross-validatoin -->
+<!-- Cross-validation -->
 
 
   <div class = "container">
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
             <a id = "cv"><h3><b>2. Cross-Validation</b></h3></a>
-            <p>We <b>evaluated the classifier</b> by getting predictions on the entire 2000-2015 draft dataset with cross-validation.</p>
+            <p>We <b>evaluated the classifier</b> by getting predictions on the entire 2000-2015 draft dataset with cross-validation. The classifier performed well but was <b>more effective in classifying players who played</b>, possibly because of the larger sample size.
         </div>
       </div>
 
@@ -435,9 +435,9 @@
                   <thead>
                     <tr style="text-align: right;">
                       <th></th>
-                      <th>Precision</th>
-                      <th>Recall</th>
-                      <th>F1 Score</th>
+                      <th title = "Of players classifed, how many were classified correctly">Precision</th>
+                      <th title = "Of players actually in each group, how many classified correctly">Recall</th>
+                      <th title = "2 * precision * recall/(precision + recall)">F1 Score</th>
                       <th>Support</th>
                     </tr>
                   </thead>
@@ -466,6 +466,16 @@
                   </tbody>
                 </table>
         </div>
+    </div>
+
+<!-- Testing on new data -->
+  <div class = "container">
+      <div class = "row">
+        <div class = "col-md-6 col-lg-12">
+            <a id = "test-new"><h3><b>3. Testing on New Data</b></h3></a>
+            <p>We <b>evaluated the classifier</b> by getting predictions on the entire 2000-2015 draft dataset with cross-validation. The classifier performed well but was <b>more effective in classifying players who played</b>, possibly because of the larger sample size.
+        </div>
+      </div>
 
   </div>
 
