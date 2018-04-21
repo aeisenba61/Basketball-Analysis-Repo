@@ -24,13 +24,25 @@ nav .navbar-nav li .nav-link{
     padding-top: 0px;
 }
 
-h1 {
+nav .navbar-header .navbar-brand {
     font-weight: bold;
     color: #CA102E;
-    text-shadow: 1px 1px gray;
+    text-shadow: 1.5px 2px gray;
+}
+
+h1 {
+    font-weight: bold;
 }
 
 .nav-link {
     font-weight: bold;
     font-size: 18px;
+}
+
+code {
+    color: #CA102E;
+}
+
+.ns {
+    color: silver;
 }
