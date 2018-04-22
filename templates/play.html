@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>NBA Salaries</title>
+  <title>NBA Success</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
@@ -15,7 +15,7 @@
         <a class="navbar-brand" href="index.html">
           <img class = "logo" src = "logo.png">
         </a> -->
-        <a class = "navbar-brand" href="index.html"><h1>Getting Paid in the NBA</h1></a>
+        <a class = "navbar-brand" href="index.html"><h1>Success in the NBA</h1></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,8 +46,8 @@
             <p><b>Steps:</b></p>
             <ol>
                 <li><a href = "#feat-sel">Feature Selection</a></li>
-                <li><a href = "#cv">Cross-Validation</a></li>
-                <li><a href = "#test-new">Testing the Classifier</a></li>
+                <li><a href = "#fit">Fitting</a></li>
+                <li><a href = "#test-new">Testing on New Data</a></li>
             </ol>
             <p>Abbreviated code is included but the full code can be found <a href = "https://github.com/aeisenba61/Basketball-Analysis-Repo/blob/master/ml_logistic/pred_roster.md" target = "_blank">here</a>.</p>
         </div>
@@ -284,7 +284,14 @@
 <!-- Correlation explanation -->
     <div class = "container">
         <br>
-        <p>We averaged the correlations produced from each of the k = 10 folds and selected only <b>correlations above .3</b>.</p>
+        <p>We averaged the correlations produced from each of the k = 10 folds and selected only <b>correlations above .3</b>.<br>The <b>final features</b> were:</p>
+        <ul>
+            <li><code>draft_Pk</code>: Draft pick order</li>
+            <li><code>draft_Games</code>: Number of games</li>
+            <li><code>draft_attend_college</code>: Drafted from college</li>
+            <li><code>draft_Minutes.Played</code>: Total minutes played</li>
+            <li><code>draft_PTS</code>: Total points</li>
+        </ul>
 
       <button data-toggle = "collapse" data-target = "#avg-corr-code">Code</button>
         <div class = "collapse" id = "avg-corr-code"><br>
@@ -367,20 +374,11 @@
             </table>
             <b>&ensp;Note.</b> <i>Avg corr (Abs)</i> refers to the absolute value of the correlation. Correlations in gray were below .3.
         </div><br>
-<!-- Final features -->
-        <p>The <b>final features</b> were:</p>
-        <ul>
-            <li><code>draft_Pk</code>: Draft pick order</li>
-            <li><code>draft_Games</code>: Number of games</li>
-            <li><code>draft_attend_college</code>: Drafted from college</li>
-            <li><code>draft_Minutes.Played</code>: Total minutes played</li>
-            <li><code>draft_PTS</code>: Total points</li>
-        </ul>
+
     </div>
   </div>
 
 <!-- Tableau Viz -->
-<br>
   <div class = "container">
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
@@ -423,8 +421,10 @@
   <div class = "container">
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
-            <a id = "cv"><h3><b>2. Cross-Validation</b></h3></a>
-            <p>We <b>evaluated the classifier</b> by getting predictions on the entire 2000-2015 draft dataset with cross-validation. The classifier performed well but was <b>more effective in classifying players who played</b>, possibly because of the larger sample size.
+            <a id = "fit"><h3><b>2. Fitting</b></h3></a>
+            <p>We fit the classifier by getting predictions on the entire 2000-2015 draft dataset with k = 10-fold cross-validation. The classifier performed well but was <b>more effective in classifying players who played</b>, possibly because of the larger sample size.</p>
+
+            <p><a href = "https://github.com/aeisenba61/Basketball-Analysis-Repo/blob/master/ml_logistic/predictions/draft00_15_preds.csv" target = "_blank">Predicted probabilities for each player: 2000-2015 draft classes</a></p>
         </div>
       </div>
 
@@ -484,7 +484,6 @@
                   </tbody>
         </table>
     </div>
-    <p><a href = "https://github.com/aeisenba61/Basketball-Analysis-Repo/blob/master/ml_logistic/predictions/draft00_15_preds.csv" target = "_blank">Predicted probabilities for each player (2000-2015 draft classes)</a>
     </div>
 
 <!-- Testing on new data -->
@@ -492,7 +491,9 @@
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
             <a id = "test-new"><h3><b>3. Testing on New Data</b></h3></a>
-            <p>We pickled the classifier then tested it on a new dataset, with data from the 2016 draft class. The classifier performed considerably worse, presumably because of the small and skewed sample sizes. It was <b> much more effective in classifying players who played.</b>
+            <p>We pickled the classifier then tested it on a new dataset, with data from the 2016 draft class. The classifier performed considerably worse, presumably because of the small and skewed sample sizes. It was <b> much more effective in classifying players who played.</b></p>
+
+            <p><a href = "https://github.com/aeisenba61/Basketball-Analysis-Repo/blob/master/ml_logistic/predictions/draft16_preds.csv" target = "_blank">Predicted probabilities for each player: 2016 draft class</a></p>
         </div>
       </div>
 
@@ -507,10 +508,6 @@
             </pre></div>
 
             <div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;final_classifier.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
-            </pre></div>
-
-            <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_new</span> <span class="o">=</span> <span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Roster&quot;</span><span class="p">,</span> <span class="s2">&quot;draft_Player&quot;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="n">y_new</span> <span class="o">=</span> <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Roster&quot;</span><span class="p">]</span>
             </pre></div>
 
             <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Prediction</span>
@@ -566,7 +563,6 @@
                   </tbody>
         </table>
     </div>
-    <p><a href = "https://github.com/aeisenba61/Basketball-Analysis-Repo/blob/master/ml_logistic/predictions/draft16_preds.csv" target = "_blank">Predicted probabilities for each player (2016 draft class)</a>
     </div>
     </div>
 
