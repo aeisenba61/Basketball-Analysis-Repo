@@ -42,7 +42,7 @@
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
             <h3><b>Not all drafted players get to play.</b></h3>
-            <p>This model used players' draft data to predict whether or not they actually ended up playing in their first NBA season, or whether they had to sit sadly on the sidelines.</p>
+            <p>This model used players' pre-NBA data to predict whether or not they actually ended up playing in their first NBA season, or whether they had to sit sadly on the sidelines.</p>
             <p><b>Steps:</b></p>
             <ol>
                 <li><a href = "#feat-sel">Feature Selection</a></li>
@@ -60,7 +60,7 @@
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
             <a id = "feat-sel"><h3><b>1. Feature Selection</b></h3></a>
-            <p>We used <b>stratified k-fold cross-validation</b> to pick features by getting correlations between <code>Roster</code>, which represents whether a drafted player actually played in their first NBA season, and each draft variable:</p>
+            <p>We used <b>stratified k-fold cross-validation</b> to pick features by getting correlations between <code>Roster</code>, which represents whether a drafted player actually played in their first NBA season, and each pre-NBA variable:</p>
             <ul>
                 <li><code>draft_All_NBA</code>: Number of All-NBA games</li>
                 <li><code>draft_All.Star</code>: Number of All-Star games</li>
