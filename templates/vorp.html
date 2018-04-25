@@ -65,9 +65,10 @@
                 <li><code>draft_TRB</code>: Total Rebounds Pre-NBA</li>
                 <li><code>draft_AST</code>: Total Assists Pre-NBA</li>
                 <li><code>draft_FG_Percentage</code>: Field Goal Percentage Pre-NBA</li>
-                <li><code>draft_Minutes.per.Game</code>: Minutes per Game Pre-NBA</li>
-                <li><code>draft_Points.per.Game</code>: Points per Game Pre-NBA</li>
+                <li><code>draft_Minutes.per.Game</code>: Total Minutes per Game Pre-NBA</li>
+                <li><code>draft_Points.per.Game</code>: Total Points per Game Pre-NBA</li>
                 <li><code>draft_TRB.per.Game</code>: Total Rebounds per Game Pre-NBA </li>
+                <li><code>draft_Assists.per.Game</code>: Total Assists per Game Pre-NBA </li>
                 <li><code>draft_Win.Share</code>: Total Percentage of Win Share of Games Pre-NBA</li>
                 <li><code>draft_WS_per_game</code>: Total Percentage of Win Share per Game Pre-NBA</li>
                 <li><code>draft_BPM</code>: Box Plus/Minus Pre-NBA</li>
@@ -2205,6 +2206,7 @@
 </table>
 </div>
 
+
 <!-- Tableau Portion  -->
 
 <!--Regression Model-->
@@ -2212,7 +2214,384 @@
       <div class = "row">
         <div class = "col-md-6 col-lg-12">
             <a id = "fit"><h3><b>2. Fitting</b></h3></a>
-            <p>We used Linear Regression to fit the model. </p>
+            <p>We used Linear Regression to fit the model. Here you see the nba VORP vs. our predicted VORP. Our model has an <b>R2 score of .63.</b>  </p>
+          </div>
+        </div>
+      </div>
+        <button data-toggle = "collapse" data-target = "#reg-code">Code</button>
+        <div class = "collapse" id = "reg-code"><br>
+          <div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">clean_data</span><span class="o">.</span><span class="n">nba_VORP</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+          <span class="n">X</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">[</span><span class="n">sel_var</span><span class="p">]</span>
+          <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape:&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+          </pre></div>
+
+
+          <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+
+          <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+          <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span>
+          <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+
+          <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+          <span class="n">training_score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+          <span class="n">testing_score</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+        </pre></div>
+
+        <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+        <span class="n">X_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">y_scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+
+        <span class="n">X_train_scaled</span> <span class="o">=</span> <span class="n">X_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">X_test_scaled</span> <span class="o">=</span> <span class="n">X_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">y_train_scaled</span> <span class="o">=</span> <span class="n">y_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+        <span class="n">y_test_scaled</span> <span class="o">=</span> <span class="n">y_scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+        </pre></div>
+
+        <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#try to boost the score some</span>
+        <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">ensemble</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">GradientBoostingRegressor</span><span class="p">(</span><span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">min_samples_split</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                  <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="s1">&#39;ls&#39;</span><span class="p">)</span>
+        </pre></div>
+        <div class=" highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train_scaled</span><span class="p">)</span>
+        <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">,</span> <span class="n">y_test_scaled</span><span class="p">)</span>
+        </pre></div>
+      <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#FINALLY NBA VORP PREDICTIONS</span>
+      <span class="n">predicted_vorp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X2</span><span class="p">))</span>
+      <span class="n">predicted_vorp</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Predicted_VORP&#39;</span><span class="p">]</span>
+      <span class="n">pred_feat</span> <span class="o">=</span> <span class="n">clean_data1</span><span class="p">[</span><span class="n">sel_var</span><span class="p">]</span>
+      <span class="n">player</span> <span class="o">=</span> <span class="n">clean_data1</span><span class="p">[</span><span class="s1">&#39;draft_Player&#39;</span><span class="p">]</span>
+      <span class="n">actual_vorp</span> <span class="o">=</span> <span class="n">clean_data</span><span class="p">[</span><span class="s1">&#39;nba_VORP&#39;</span><span class="p">]</span>
+      <span class="n">vorp_diff</span> <span class="o">=</span> <span class="n">actual_vorp</span> <span class="o">-</span> <span class="n">predicted_vorp</span>
+      <span class="n">prediction_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">player</span><span class="p">,</span> <span class="n">pred_feat</span><span class="p">,</span> <span class="n">actual_vorp</span><span class="p">,</span> <span class="n">predicted_vorp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">prediction_df</span><span class="p">[</span><span class="s2">&quot;Predicted_VORP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction_df</span><span class="p">[</span><span class="s1">&#39;Predicted_VORP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+      <span class="n">prediction_df</span><span class="p">[</span><span class="s2">&quot;VORP_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">prediction_df</span><span class="p">[</span><span class="s2">&quot;nba_VORP&quot;</span><span class="p">]</span><span class="o">-</span><span class="n">prediction_df</span><span class="p">[</span><span class="s2">&quot;Predicted_VORP&quot;</span><span class="p">])</span>
+      <span class="n">prediction_df</span><span class="p">[</span><span class="s2">&quot;Abs_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">prediction_df</span><span class="p">[</span><span class="s1">&#39;VORP_diff&#39;</span><span class="p">])</span>
+      <span class="n">prediction_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+      </pre></div>
+
+      </div>
+    <button data-toggle = "collapse" data-target = "#prediction-code">Predictions</button>
+          <div class = "collapse" id = "prediction-code"><br>
+          <div class = "col-md-6">
+        <table class="table table-hover">
+          <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>draft_Player</th>
+      <th>draft_AST</th>
+      <th>draft_Assits.per.Game</th>
+      <th>draft_BPM</th>
+      <th>draft_Games</th>
+      <th>draft_Minutes.Played</th>
+      <th>draft_Minutes.per.Game</th>
+      <th>draft_PTS</th>
+      <th>draft_Points.per.Game</th>
+      <th>draft_TRB</th>
+      <th>draft_TRB.per.game</th>
+      <th>draft_VORP</th>
+      <th>draft_WS_per_game</th>
+      <th>draft_Win.Share</th>
+      <th>nba_VORP</th>
+      <th>Predicted_VORP</th>
+      <th>VORP_diff</th>
+      <th>Abs_diff</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Stromile Swift</td>
+      <td>275</td>
+      <td>0.5</td>
+      <td>-1.9</td>
+      <td>547</td>
+      <td>10804</td>
+      <td>19.8</td>
+      <td>4582</td>
+      <td>8.4</td>
+      <td>2535</td>
+      <td>4.6</td>
+      <td>0.2</td>
+      <td>0.095</td>
+      <td>21.3</td>
+      <td>0.2</td>
+      <td>0.2</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Jamaal Magloire</td>
+      <td>386</td>
+      <td>0.6</td>
+      <td>-2.9</td>
+      <td>680</td>
+      <td>14621</td>
+      <td>21.5</td>
+      <td>4917</td>
+      <td>7.2</td>
+      <td>4408</td>
+      <td>6.5</td>
+      <td>-3.3</td>
+      <td>0.091</td>
+      <td>27.7</td>
+      <td>-0.2</td>
+      <td>-0.5</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Erick Barkley</td>
+      <td>40</td>
+      <td>1.5</td>
+      <td>-3.8</td>
+      <td>27</td>
+      <td>266</td>
+      <td>9.9</td>
+      <td>77</td>
+      <td>2.9</td>
+      <td>21</td>
+      <td>0.8</td>
+      <td>-0.1</td>
+      <td>0.027</td>
+      <td>0.2</td>
+      <td>0.0</td>
+      <td>-0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Jake Tsakalidis</td>
+      <td>101</td>
+      <td>0.3</td>
+      <td>-3.1</td>
+      <td>315</td>
+      <td>5005</td>
+      <td>15.9</td>
+      <td>1497</td>
+      <td>4.8</td>
+      <td>1238</td>
+      <td>3.9</td>
+      <td>-1.3</td>
+      <td>0.095</td>
+      <td>9.9</td>
+      <td>-0.4</td>
+      <td>-0.4</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Joel Przybilla</td>
+      <td>256</td>
+      <td>0.4</td>
+      <td>-0.9</td>
+      <td>592</td>
+      <td>11733</td>
+      <td>19.8</td>
+      <td>2293</td>
+      <td>3.9</td>
+      <td>3665</td>
+      <td>6.2</td>
+      <td>3.3</td>
+      <td>0.094</td>
+      <td>23.0</td>
+      <td>-0.1</td>
+      <td>-0.1</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+<!-- Testing on new data -->
+  <div class = "container">
+      <div class = "row">
+        <div class = "col-md-6 col-lg-12">
+            <a id = "test-new"><h3><b>3. Testing on New Data</b></h3></a>
+            <p>We pickled the model then tested it on a new dataset, with data from the 2016 draft class. This time, the <b> R2 was .44</b></p>
+</div>
+<!-- Pickling -->
+
+   <button data-toggle = "collapse" data-target = "#pickle">Code</button>
+        <div id = "pickle" class = "collapse"><br>
+
+        <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;FinalRegression_Model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+        </pre></div>
+
+        <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Test on New Data</span>
+        <span class="n">new_draft</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;draft16_nba17_vorp.csv&quot;</span><span class="p">)</span>
+        <span class="n">new_draft</span>
+        <span class="n">var_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;draft_AST&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_Assits.per.Game&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_BPM&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_Games&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;draft_Minutes.Played&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Minutes.per.Game&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_PTS&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;draft_Points.per.Game&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_TRB&#39;</span><span class="p">,</span><span class="s1">&#39;draft_TRB.per.game&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;draft_VORP&#39;</span><span class="p">,</span><span class="s1">&#39;draft_WS_per_game&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Win.Share&#39;</span><span class="p">]</span>
+            <span class="n">var_list</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="s2">&quot;draft_Player&quot;</span><span class="p">,</span> <span class="s2">&quot;nba_VORP&quot;</span><span class="p">))</span>
+            <span class="n">new_draft</span> <span class="o">=</span> <span class="n">new_draft</span><span class="p">[</span><span class="n">var_list</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s2">&quot;any&quot;</span><span class="p">)</span>
+            <span class="n">new_draft</span>
+            </pre></div>
+
+            <div class=" highlight hl-ipython3"><pre><span></span><span class="n">X_new</span> <span class="o">=</span> <span class="n">new_draft</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;nba_VORP&quot;</span><span class="p">,</span> <span class="s2">&quot;draft_Player&quot;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">y_new</span> <span class="o">=</span> <span class="n">new_draft</span><span class="p">[</span><span class="s2">&quot;nba_VORP&quot;</span><span class="p">]</span>
+            </pre></div>
+
+
+            <div class=" highlight hl-ipython3"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;VORPRegression_Model4.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+            </pre></div>
+
+            <div class=" highlight hl-ipython3"><pre><span></span><span class="n">new_vorp</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">)</span>
+            <span class="n">vorp_true</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;nba_VORP (Actual)&#39;</span><span class="p">:</span><span class="n">y_new</span><span class="p">,</span>
+            <span class="s1">&#39;nba_VORP (Predicted)&#39;</span><span class="p">:</span> <span class="n">new_vorp</span><span class="p">})</span>
+            <span class="n">new_player</span> <span class="o">=</span> <span class="n">new_draft</span><span class="p">[</span><span class="n">var_list</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;nba_VORP&quot;</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">new_player</span><span class="p">,</span> <span class="n">vorp_true</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;nba_VORP (Predicted)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;nba_VORP (Predicted)&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;VORP_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;nba_VORP (Actual)&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;nba_VORP (Predicted)&quot;</span><span class="p">]</span>
+            <span class="n">new_df</span><span class="p">[</span><span class="s2">&quot;Abs_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_df</span><span class="p">[</span><span class="s1">&#39;VORP_diff&#39;</span><span class="p">])</span>
+
+            <span class="n">col_order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;draft_Player&#39;</span><span class="p">,</span> <span class="s1">&#39;nba_VORP (Actual)&#39;</span><span class="p">,</span> <span class="s1">&#39;nba_VORP (Predicted)&#39;</span><span class="p">,</span> <span class="s1">&#39;Abs_diff&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Assits.per.Game&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_BPM&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;draft_Games&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Minutes.Played&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Minutes.per.Game&#39;</span><span class="p">,</span> 
+             <span class="s1">&#39;draft_PTS&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Points.per.Game&#39;</span><span class="p">,</span> <span class="s1">&#39;draft_TRB&#39;</span><span class="p">,</span><span class="s1">&#39;draft_TRB.per.game&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;draft_VORP&#39;</span><span class="p">,</span><span class="s1">&#39;draft_WS_per_game&#39;</span><span class="p">,</span><span class="s1">&#39;draft_Win.Share&#39;</span><span class="p">]</span>
+            <span class="n">new_df</span><span class="o">=</span><span class="n">new_df</span><span class="p">[</span><span class="n">col_order</span><span class="p">]</span>
+            <span class="n">new_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+            </pre></div>
+              </div>
+      
+
+
+
+          <button data-toggle = "collapse" data-target = "#final">2016 Predictions</button>
+        <div id = "final" class = "collapse">
+
+       <div class = "col-md-6">
+        <table class="table table-hover">
+          <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>draft_Player</th>
+      <th>nba_VORP (Actual)</th>
+      <th>nba_VORP (Predicted)</th>
+      <th>Abs_diff</th>
+      <th>draft_Assits.per.Game</th>
+      <th>draft_BPM</th>
+      <th>draft_Games</th>
+      <th>draft_Minutes.Played</th>
+      <th>draft_Minutes.per.Game</th>
+      <th>draft_PTS</th>
+      <th>draft_Points.per.Game</th>
+      <th>draft_TRB</th>
+      <th>draft_TRB.per.game</th>
+      <th>draft_VORP</th>
+      <th>draft_WS_per_game</th>
+      <th>draft_Win.Share</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ben Simmons</td>
+      <td>4.6</td>
+      <td>1.3</td>
+      <td>3.3</td>
+      <td>8.2</td>
+      <td>4.6</td>
+      <td>81.0</td>
+      <td>2732.0</td>
+      <td>33.7</td>
+      <td>1279.0</td>
+      <td>15.8</td>
+      <td>659.0</td>
+      <td>8.1</td>
+      <td>4.6</td>
+      <td>0.162</td>
+      <td>9.2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Brandon Ingram</td>
+      <td>0.4</td>
+      <td>-0.4</td>
+      <td>0.8</td>
+      <td>2.9</td>
+      <td>-2.6</td>
+      <td>138.0</td>
+      <td>4254.0</td>
+      <td>30.8</td>
+      <td>1689.0</td>
+      <td>12.2</td>
+      <td>630.0</td>
+      <td>4.6</td>
+      <td>-0.7</td>
+      <td>0.028</td>
+      <td>2.5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Jaylen Brown</td>
+      <td>1.0</td>
+      <td>-0.1</td>
+      <td>1.1</td>
+      <td>1.2</td>
+      <td>-1.6</td>
+      <td>148.0</td>
+      <td>3493.0</td>
+      <td>23.6</td>
+      <td>1532.0</td>
+      <td>10.4</td>
+      <td>567.0</td>
+      <td>3.8</td>
+      <td>0.3</td>
+      <td>0.082</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Dragan Bender</td>
+      <td>-0.4</td>
+      <td>-0.2</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>-3.0</td>
+      <td>125.0</td>
+      <td>2643.0</td>
+      <td>21.1</td>
+      <td>677.0</td>
+      <td>5.4</td>
+      <td>464.0</td>
+      <td>3.7</td>
+      <td>-0.7</td>
+      <td>-0.005</td>
+      <td>-0.3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kris Dunn</td>
+      <td>0.7</td>
+      <td>0.0</td>
+      <td>0.7</td>
+      <td>3.8</td>
+      <td>-1.1</td>
+      <td>130.0</td>
+      <td>2858.0</td>
+      <td>22.0</td>
+      <td>992.0</td>
+      <td>7.6</td>
+      <td>387.0</td>
+      <td>3.0</td>
+      <td>0.7</td>
+      <td>0.016</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 </body>
 
